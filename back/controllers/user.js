@@ -11,8 +11,11 @@ exports.signup = (req, res, next) => {
         password: hash,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
+        role: req.body.role,
       });
-      console.log(user);
+      if (req.body.email === "galatee521@gmail.com") {
+        user.role = "admin";
+      }
       user
         .save()
         .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
@@ -40,6 +43,7 @@ exports.login = (req, res, next) => {
             }),
             firstName: user.firstName,
             lastName: user.lastName,
+            role: user.role,
           });
         })
         .catch((error) => res.status(500).json({ error }));

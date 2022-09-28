@@ -32,6 +32,7 @@ export default function Login() {
         if (response.status === 200)
           response.json().then((data) => {
             localStorage.setItem("userData", JSON.stringify(data));
+
             navigate("/home");
             window.location.reload();
           });
