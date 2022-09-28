@@ -27,11 +27,15 @@ export default function Login() {
       body: JSON.stringify(userData),
     };
 
-    fetch("http://localhost:3000/auth/login", requestOptions).then((response) =>
-      response.json().then((data) => {
-        localStorage.setItem("userData", JSON.stringify(data));
-        navigate("/home");
-      })
+    fetch("http://localhost:3000/auth/login", requestOptions).then(
+      (response) => {
+        if (response.status === 200)
+          response.json().then((data) => {
+            localStorage.setItem("userData", JSON.stringify(data));
+            navigate("/home");
+            window.location.reload();
+          });
+      }
     );
   }
   React.useEffect(function () {

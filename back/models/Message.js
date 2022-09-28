@@ -5,6 +5,7 @@ const messageSchema = mongoose.Schema({
   message: { type: String },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
+  date: { type: Number },
 });
 
 module.exports = mongoose.model("Message", messageSchema);

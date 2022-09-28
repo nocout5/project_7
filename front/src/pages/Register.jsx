@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [userData, setUserData] = React.useState({
@@ -7,9 +7,10 @@ export default function Register() {
     password: "",
     firstName: "",
     lastName: "",
+    role: "user",
   });
 
-  const [error, setError] = React.useState(0);
+  const navigate = useNavigate();
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -29,14 +30,14 @@ export default function Register() {
 
     fetch("http://localhost:3000/auth/signup", requestOptions).then(
       (response) => {
-        response.status === 201 ? setError(201) : alert("wrong input");
+        console.log(response);
+        navigate("/login");
       }
     );
   }
 
   return (
     <div>
-      {error === 201 && <Navigate to="/login" replace={true} />}
       <h1>register page</h1>
       <form onSubmit={handleSubmit}>
         <input
