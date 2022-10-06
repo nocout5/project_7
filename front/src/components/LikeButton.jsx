@@ -9,7 +9,9 @@ function LikeButton(props) {
 
   React.useEffect(() => {
     props.socket.on("like_message_update", (data) => {
-      setMessage(data);
+      if (message._id === data._id) {
+        setMessage(data);
+      }
     });
   }, [props.socket]);
 
@@ -29,7 +31,7 @@ function LikeButton(props) {
         props.socket.emit("like_message", data);
       });
   };
-
+  console.log(message);
   return (
     <div>
       {indexDislike === -1 && indexLike === -1 && (
