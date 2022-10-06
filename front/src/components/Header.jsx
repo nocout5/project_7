@@ -8,12 +8,12 @@ import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const [userData, setUserData] = React.useState(
-    localStorage.getItem("userData")
+    sessionStorage.getItem("userData")
   );
   const navigate = useNavigate();
 
   function unlog() {
-    localStorage.removeItem("userData");
+    sessionStorage.removeItem("userData");
     setUserData();
     navigate("/login");
   }

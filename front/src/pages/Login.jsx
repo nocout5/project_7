@@ -8,7 +8,7 @@ export default function Login() {
   });
   const navigate = useNavigate();
 
-  const userIsLogged = localStorage.getItem("userData");
+  const userIsLogged = sessionStorage.getItem("userData");
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -20,6 +20,7 @@ export default function Login() {
 
     const requestOptions = {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -31,9 +32,7 @@ export default function Login() {
       (response) => {
         if (response.status === 200)
           response.json().then((data) => {
-            localStorage.setItem("userData", JSON.stringify(data));
-
-            navigate("/home");
+            sessionStorage.setItem("userData", JSON.stringify(data));
             window.location.reload();
           });
       }

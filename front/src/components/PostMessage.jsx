@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function PostMessage(props) {
-  const userData = JSON.parse(localStorage.getItem("userData"));
+  const userData = JSON.parse(sessionStorage.getItem("userData"));
   const [message, setMessage] = React.useState({
     message: "",
     userId: userData.userId,
@@ -18,13 +18,15 @@ export default function PostMessage(props) {
   function handleSubmit(event) {
     event.preventDefault();
     const message_to_send = message;
-    message_to_send.date = Date.now();
+    const date = new Date();
+    console.log(date);
+    message_to_send.date = date;
     const requestOptions = {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: `Bearer ${userData.token}`,
       },
       body: JSON.stringify(message_to_send),
     };

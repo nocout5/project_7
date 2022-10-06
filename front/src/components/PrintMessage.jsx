@@ -1,19 +1,24 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import LikeButton from "./LikeButton";
 
 export default function Message(props) {
   const [messagesData, setMessageData] = React.useState([]);
   const [deleteId, setDeleteId] = React.useState([]);
-  const token = JSON.parse(localStorage.getItem("userData")).token;
+
+  const navigate = useNavigate();
 
   React.useEffect(function () {
     fetch("http://localhost:3000/messages/", {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setMessageData(data));
+      credentials: "include",
+    }).then((res) => {
+      if (res.status === 401) {
+        sessionStorage.removeItem("userData");
+        navigate("/login");
+      }
+      res.json().then((data) => setMessageData(data));
+    });
   }, []);
 
   React.useEffect(() => {
@@ -25,12 +30,10 @@ export default function Message(props) {
     });
   }, [props.socket]);
 
-  const deleteButton = (event, id) => {
+  const deleteButton = (id) => {
     fetch(`http://localhost:3000/messages/${id}`, {
       method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      credentials: "include",
     })
       .then((res) => res.json())
       .then((data_id) => {
@@ -43,12 +46,13 @@ export default function Message(props) {
       <div key={message._id}>
         {deleteId.indexOf(message._id) === -1 && (
           <div key={message._id}>
-            <p>
+            <div>
               {message.firstName} {message.lastName} {message.date}
-              <button onClick={(event) => deleteButton(event, message._id)}>
+              <button onClick={() => deleteButton(message._id)}>
                 supprimer
               </button>
-            </p>
+              <LikeButton socket={props.socket} message={message} />
+            </div>
             <h3>{message.message}</h3>
           </div>
         )}

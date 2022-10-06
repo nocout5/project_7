@@ -3,14 +3,17 @@ const express = require("express");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/user");
 const messagesRoutes = require("./routes/messages");
+const cookieParser = require("cookie-parser");
+
 const socketIo = require("socket.io");
+
 const app = express();
 const server = http.createServer(app);
 
 const io = socketIo(server, {
   cors: {
     origin: "http://localhost:3001",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "DELETE"],
   },
 });
 
@@ -49,6 +52,7 @@ const errorHandler = (error) => {
   }
 };
 
+app.use(cookieParser());
 app.use(express.json());
 
 mongoose
@@ -69,16 +73,22 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
   );
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3001");
+
   next();
 });
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
   socket.on("send-message", (data) => {
-    socket.emit("message-receive", data);
+    io.emit("message-receive", data);
   });
   socket.on("delete_message", (data) => {
-    socket.emit("id_to_delete", data);
+    io.emit("id_to_delete", data);
+  });
+  socket.on("like_message", (data) => {
+    io.emit("like_message_update", data.infos);
   });
 });
 

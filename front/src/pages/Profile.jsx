@@ -1,7 +1,7 @@
 import React from "react";
 
 function Profile() {
-  const user_data = JSON.parse(localStorage.getItem("userData"));
+  const user_data = JSON.parse(sessionStorage.getItem("userData"));
   return (
     <div>
       <h1>User config</h1>

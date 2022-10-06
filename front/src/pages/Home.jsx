@@ -1,5 +1,5 @@
 import React from "react";
-import Message from "../components/Message";
+import PrintMessage from "../components/PrintMessage";
 import PostMessage from "../components/PostMessage";
 import io from "socket.io-client";
 
@@ -10,7 +10,7 @@ export default function Home() {
     <div>
       <h1>Home page</h1>
       <PostMessage socket={socket} />
-      <Message socket={socket} />
+      <PrintMessage socket={socket} />
     </div>
   );
 }
