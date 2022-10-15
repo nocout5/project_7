@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 const userRoutes = require("./routes/user");
 const messagesRoutes = require("./routes/messages");
 const cookieParser = require("cookie-parser");
+const path = require("path");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const socketIo = require("socket.io");
 
@@ -52,8 +55,12 @@ const errorHandler = (error) => {
   }
 };
 
+app.use(cors({ origin: true, credentials: true }));
+
 app.use(cookieParser());
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose
   .connect(
@@ -64,18 +71,7 @@ mongoose
   .catch(() => console.log("Connexion à MongoDB échouée !"));
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", true);
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3001");
-
   next();
 });
 
@@ -101,5 +97,6 @@ server.on("listening", () => {
 
 app.use("/auth", userRoutes);
 app.use("/messages", messagesRoutes);
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 server.listen(port);

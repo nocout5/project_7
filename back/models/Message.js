@@ -10,6 +10,7 @@ const messageSchema = mongoose.Schema({
   dislikes: { type: Number },
   usersLiked: { type: Array },
   usersDisliked: { type: Array },
+  imageUrl: { type: String },
 });
 
 module.exports = mongoose.model("Message", messageSchema);

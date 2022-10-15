@@ -53,6 +53,7 @@ export default function Message(props) {
               </button>
               <LikeButton socket={props.socket} message={message} />
             </div>
+            {message.imageUrl && <img src={message.imageUrl} alt="pic" />}
             <h3>{message.message}</h3>
           </div>
         )}

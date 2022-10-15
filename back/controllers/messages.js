@@ -1,8 +1,9 @@
 const Message = require("../models/Message");
 const User = require("../models/User");
+const fs = require("fs");
 
 exports.createMessage = (req, res, next) => {
-  const messageObject = req.body;
+  const messageObject = JSON.parse(req.body.message);
   const message = new Message({
     ...messageObject,
     likes: 0,
@@ -11,6 +12,11 @@ exports.createMessage = (req, res, next) => {
     usersDisliked: [],
     userId: req.auth.userId,
   });
+  if (req.file) {
+    message.imageUrl = `${req.protocol}://${req.get("host")}/images/${
+      req.file.filename
+    }`;
+  }
 
   message
     .save()
@@ -37,11 +43,22 @@ exports.deleteMessage = (req, res, next) => {
         if (message.userId != req.auth.userId && user_role != "admin") {
           res.status(401).json({ message: "Not authorized" });
         } else {
-          Message.deleteOne({ _id: req.params.id })
-            .then((infos) => {
-              res.status(200).json(req.params.id);
-            })
-            .catch((error) => res.status(401).json({ error }));
+          if (message.imageUrl) {
+            const filename = message.imageUrl.split("/images/")[1];
+            fs.unlink(`images/${filename}`, () => {
+              Message.deleteOne({ _id: req.params.id })
+                .then((infos) => {
+                  res.status(200).json(req.params.id);
+                })
+                .catch((error) => res.status(401).json({ error }));
+            });
+          } else {
+            Message.deleteOne({ _id: req.params.id })
+              .then((infos) => {
+                res.status(200).json(req.params.id);
+              })
+              .catch((error) => res.status(401).json({ error }));
+          }
         }
       })
       .catch((error) => {

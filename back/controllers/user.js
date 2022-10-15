@@ -53,3 +53,10 @@ exports.login = (req, res, next) => {
     })
     .catch((error) => res.status(500).json({ error }));
 };
+
+exports.logout = (req, res, next) => {
+  res.cookie("access_token", "", {
+    Expire: 0,
+  });
+  res.json({ message: "session ended" });
+};

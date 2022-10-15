@@ -31,7 +31,6 @@ function LikeButton(props) {
         props.socket.emit("like_message", data);
       });
   };
-  console.log(message);
   return (
     <div>
       {indexDislike === -1 && indexLike === -1 && (

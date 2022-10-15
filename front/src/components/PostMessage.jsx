@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 export default function PostMessage(props) {
   const userData = JSON.parse(sessionStorage.getItem("userData"));
@@ -9,6 +10,11 @@ export default function PostMessage(props) {
     lastName: userData.lastName,
     date: 0,
   });
+  const [file, setFile] = React.useState();
+
+  const saveFile = (e) => {
+    setFile(e.target.files[0]);
+  };
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -19,25 +25,27 @@ export default function PostMessage(props) {
     event.preventDefault();
     const message_to_send = message;
     const date = new Date();
-    console.log(date);
     message_to_send.date = date;
+
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("message", JSON.stringify(message_to_send));
+
     const requestOptions = {
       method: "POST",
       credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(message_to_send),
+      headers: {},
+      body: formData,
     };
 
     fetch("http://localhost:3000/messages/", requestOptions).then((response) =>
       response.json().then((message_data) => {
-        console.log("message send");
+        console.log(message_data);
         props.socket.emit("send-message", message_data.infos);
       })
     );
   }
+
   return (
     <form onSubmit={handleSubmit}>
       <input
@@ -47,6 +55,8 @@ export default function PostMessage(props) {
         name="message"
         value={message.message}
       />
+      <input type="file" onChange={saveFile} />
+
       <button>post !</button>
     </form>
   );
