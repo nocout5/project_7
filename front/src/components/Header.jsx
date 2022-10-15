@@ -8,12 +8,17 @@ import logo_earth from "../assets/logo_earth.png";
 import logo_text from "../assets/logo_text.png";
 
 const HeaderStyle = styled.header`
-  color: ${colors.primary};
+  border: 2px solid red;
+  width: 100vw;
+  background-color: #1f4160;
+  margin-bottom: 40px;
+  
   img {
-    background-color: #1f4160;
+    padding: 10px;
     border-radius: 14px;
-    padding: 5px;
   }
+
+  
 `;
 
 export default function Header() {

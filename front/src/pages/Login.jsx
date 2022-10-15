@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Register from "../components/Register";
 import styled from "styled-components";
 import colors from "../style/color";
+import login_background from '../assets/login_back.jpg'
 
 const LogContainer = styled.div`
   background-color: ${colors.tertiary};
@@ -11,6 +12,7 @@ const LogContainer = styled.div`
   width: 350px;
   height: 550px;
   margin: auto;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   position: relative;
   &::after {
     content: "";
@@ -23,7 +25,7 @@ const LogContainer = styled.div`
     background-repeat: no-repeat;
     background-position: left bottom;
     background-size: 500px;
-    background-image: url("https://images.unsplash.com/photo-1503602642458-232111445657?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=bf884ad570b50659c5fa2dc2cfb20ecf&auto=format&fit=crop&w=1000&q=100");
+    background-image: url(${login_background});
   }
 
   .log_in {
@@ -61,7 +63,7 @@ const LogContainer = styled.div`
     text-align: center;
 
     span {
-      color: rgba(0, 0, 0, 0.4);
+      color: rgba(232, 20, 20, 0.8);
       opacity: 0;
       visibility: hidden;
       -webkit-transition: all 0.3s ease;
@@ -97,7 +99,7 @@ const LogContainer = styled.div`
     }
   }
   .submit-btn {
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgb(229, 56, 56, 0.4);
     color: rgba(256, 256, 256, 0.7);
     border: 0;
     border-radius: 15px;
@@ -114,7 +116,8 @@ const LogContainer = styled.div`
 
     &:hover {
       transition: all 0.3s ease;
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: rgb(229, 56, 56, 0.9);
+      transform : scale(1.1);
     }
   }
 
@@ -305,7 +308,7 @@ export default function Login() {
     <LogContainer>
       <div className={slideUp ? "slide-up log_in" : "log_in"}>
         <h2 onClick={slideLogIn} className="form-title" id="log_in">
-          <span>or</span>Log in
+          <span>ou</span>Connexion
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="form-holder">
@@ -320,14 +323,14 @@ export default function Login() {
             <input
               className="input"
               type="text"
-              placeholder="password"
+              placeholder="mot de passe"
               onChange={handleChange}
               name="password"
               value={userData.password}
             />
           </div>
           <div>
-            <button className="submit-btn">Log in</button>
+            <button className="submit-btn">Se connecter</button>
           </div>
         </form>
       </div>
