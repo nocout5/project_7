@@ -44,8 +44,8 @@ export default function Register(props) {
     <div className={props.state ? " SignUp" : "SignUp slide-up "}>
       <div className="center">
         <h2 onClick={slideSignUp} className="form-title" id="SignUp">
-          <span>or</span>
-          Sign up
+          <span>ou</span>
+          S'inscrire
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="form-holder">
@@ -82,7 +82,7 @@ export default function Register(props) {
               value={userData.lastName}
             />
           </div>
-          <button className="submit-btn">Submit</button>
+          <button className="submit-btn">Envoyer</button>
         </form>
       </div>
     </div>
