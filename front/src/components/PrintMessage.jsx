@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import LikeButton from "./LikeButton";
+import ModifyButton from "./ModifyButton";
 
 export default function Message(props) {
   const [messagesData, setMessageData] = React.useState([]);
@@ -52,6 +53,7 @@ export default function Message(props) {
                 supprimer
               </button>
               <LikeButton socket={props.socket} message={message} />
+              <ModifyButton />
             </div>
             {message.imageUrl && <img src={message.imageUrl} alt="pic" />}
             <h3>{message.message}</h3>

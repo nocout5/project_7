@@ -49,7 +49,7 @@ export default function Header() {
       <img src={logo_text} alt="logo groupomania" />
       <nav>
         {userData && (
-          <Link to="/home" element={<Home />}>
+          <Link to="/" element={<Home />}>
             acceuil
           </Link>
         )}

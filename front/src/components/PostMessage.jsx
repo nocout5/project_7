@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 
 export default function PostMessage(props) {
   const userData = JSON.parse(sessionStorage.getItem("userData"));

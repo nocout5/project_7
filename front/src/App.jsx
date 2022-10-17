@@ -37,7 +37,7 @@ export default function App() {
       <Header />
       <Routes>
         <Route element={<PrivateRoutes />}>
-          <Route element={<Home />} path="home" exact />
+          <Route element={<Home />} path="/" exact />
           <Route element={<Profile />} path="profile" exact />
         </Route>
         <Route element={<Login />} path="login" />

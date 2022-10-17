@@ -293,7 +293,7 @@ export default function Login() {
   }
   React.useEffect(function () {
     if (userIsLogged) {
-      navigate("/home");
+      navigate("/");
     }
   }, []);
 
