@@ -28,6 +28,45 @@ exports.createMessage = (req, res, next) => {
     });
 };
 
+exports.updateMessage = (req, res, next) => {
+  Message.findOne({ _id: req.params.id })
+    .then((message) => {
+      if (message.userId != req.auth.userId && user_role != "admin") {
+        res.status(401).json({ message: "Not authorized" });
+      } else {
+        const messageObject = req.file
+          ? {
+              ...JSON.parse(req.body.message),
+              imageUrl: `${req.protocol}://${req.get("host")}/images/${
+                req.file.filename
+              }`,
+            }
+          : { ...JSON.parse(req.body.message), imageUrl: "" };
+        if (message.imageUrl) {
+          const filename = message.imageUrl.split("/images/")[1];
+          fs.unlink(`images/${filename}`, (err) => {
+            if (err) {
+              console.log("failed to delete local image:" + err);
+            } else {
+              console.log("successfully deleted local image");
+            }
+          });
+        }
+
+        messageObject._id = req.params.id;
+        Message.updateOne(
+          { _id: req.params.id },
+          { ...messageObject, _id: req.params.id }
+        )
+          .then((infos) => res.status(200).json(messageObject))
+          .catch((error) => res.status(401).json({ error }));
+      }
+    })
+    .catch((error) => {
+      res.status(400).json({ error });
+    });
+};
+
 exports.getAllMessages = (req, res, next) => {
   Message.find()
     .then((messages) => {
@@ -35,6 +74,7 @@ exports.getAllMessages = (req, res, next) => {
     })
     .catch((error) => res.status(404).json(error));
 };
+
 exports.deleteMessage = (req, res, next) => {
   user = User.findOne({ _id: req.auth.userId }).then((user) => {
     const user_role = user.role;

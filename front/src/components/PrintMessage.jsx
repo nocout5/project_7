@@ -4,8 +4,9 @@ import LikeButton from "./LikeButton";
 import ModifyButton from "./ModifyButton";
 
 export default function Message(props) {
-  const [messagesData, setMessageData] = React.useState([]);
+  const [messagesData, setMessagesData] = React.useState([]);
   const [deleteId, setDeleteId] = React.useState([]);
+  const [updateData, setUpdateData] = React.useState([]);
 
   const navigate = useNavigate();
 
@@ -18,16 +19,19 @@ export default function Message(props) {
         sessionStorage.removeItem("userData");
         navigate("/login");
       }
-      res.json().then((data) => setMessageData(data));
+      res.json().then((data) => setMessagesData(data));
     });
   }, []);
 
   React.useEffect(() => {
     props.socket.on("message-receive", (msg) => {
-      setMessageData((prev) => [...prev, msg]);
+      setMessagesData((prev) => [...prev, msg]);
     });
     props.socket.on("id_to_delete", (id) => {
       setDeleteId((prev) => [...prev, id]);
+    });
+    props.socket.on("send_update_message", (data) => {
+      setUpdateData((prev) => [...prev, data]);
     });
   }, [props.socket]);
 
@@ -43,17 +47,28 @@ export default function Message(props) {
   };
 
   return messagesData.map((message) => {
+    if (updateData) {
+      updateData.map((obj) => {
+        if (obj._id === message._id) {
+          message = obj;
+        }
+        return obj;
+      });
+    }
+
     return (
       <div key={message._id}>
         {deleteId.indexOf(message._id) === -1 && (
           <div key={message._id}>
             <div>
               {message.firstName} {message.lastName} {message.date}
-              <button onClick={() => deleteButton(message._id)}>
-                supprimer
-              </button>
+              {
+                <button onClick={() => deleteButton(message._id)}>
+                  supprimer
+                </button>
+              }
               <LikeButton socket={props.socket} message={message} />
-              <ModifyButton />
+              <ModifyButton message={message} socket={props.socket} />
             </div>
             {message.imageUrl && <img src={message.imageUrl} alt="pic" />}
             <h3>{message.message}</h3>

@@ -59,8 +59,6 @@ app.use(cors({ origin: true, credentials: true }));
 
 app.use(cookieParser());
 app.use(express.json());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose
   .connect(
@@ -85,6 +83,9 @@ io.on("connection", (socket) => {
   });
   socket.on("like_message", (data) => {
     io.emit("like_message_update", data.infos);
+  });
+  socket.on("update_message", (data) => {
+    io.emit("send_update_message", data);
   });
 });
 

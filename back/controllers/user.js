@@ -13,9 +13,7 @@ exports.signup = (req, res, next) => {
         lastName: req.body.lastName,
         role: req.body.role,
       });
-      if (req.body.email === "galatee521@gmail.com") {
-        user.role = "admin";
-      }
+
       user
         .save()
         .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
