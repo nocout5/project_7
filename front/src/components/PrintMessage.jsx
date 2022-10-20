@@ -8,6 +8,8 @@ export default function Message(props) {
   const [deleteId, setDeleteId] = React.useState([]);
   const [updateData, setUpdateData] = React.useState([]);
 
+  const userData = JSON.parse(sessionStorage.getItem("userData"));
+
   const navigate = useNavigate();
 
   React.useEffect(function () {
@@ -62,7 +64,8 @@ export default function Message(props) {
           <div key={message._id}>
             <div>
               {message.firstName} {message.lastName} {message.date}
-              {
+              {(message.userId === userData.userId ||
+        userData.role === "admin") &&
                 <button onClick={() => deleteButton(message._id)}>
                   supprimer
                 </button>
