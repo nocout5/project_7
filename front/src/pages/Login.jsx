@@ -2,18 +2,25 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Register from "../components/Register";
 import styled from "styled-components";
-import colors from "../style/color";
-import login_background from '../assets/login_back.jpg'
+import { COLORS } from "../style/global_css_value";
+import login_background from "../assets/login_back.jpg";
+import { BORDER_RADIUS_VALUE } from "../style/global_css_value";
+import { LARGE_DEVICE_VALUE } from "../style/global_css_value";
 
 const LogContainer = styled.div`
-  background-color: ${colors.tertiary};
+  background-color: ${COLORS.tertiary};
   overflow: hidden;
-  border-radius: 15px;
-  width: 350px;
-  height: 550px;
+  width: 100vw;
+  flex-basis: 90vh;
   margin: auto;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   position: relative;
+  @media (min-width: ${LARGE_DEVICE_VALUE}) {
+    width: 500px;
+    flex-basis: 700px;
+    border-radius: ${BORDER_RADIUS_VALUE};
+  }
+
   &::after {
     content: "";
     opacity: 0.8;
@@ -24,16 +31,16 @@ const LogContainer = styled.div`
     left: 0;
     background-repeat: no-repeat;
     background-position: left bottom;
-    background-size: 500px;
+    background-size: cover;
     background-image: url(${login_background});
   }
 
   .log_in {
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
-    width: 65%;
+    width: 80%;
     z-index: 5;
     -webkit-transition: all 0.3s ease;
     &.slide-up {
@@ -47,7 +54,6 @@ const LogContainer = styled.div`
       visibility: hidden;
     }
     &.slide-up .form-title {
-      font-size: 1em;
       cursor: pointer;
     }
     &.slide-up .form-title span {
@@ -59,7 +65,6 @@ const LogContainer = styled.div`
   }
   .form-title {
     color: #fff;
-    font-size: 1.7em;
     text-align: center;
 
     span {
@@ -83,12 +88,11 @@ const LogContainer = styled.div`
       outline: none;
       box-shadow: none;
       display: block;
-      height: 40px;
+      height: 60px;
       line-height: 30px;
       padding: 8px 15px;
       border-bottom: 1px solid #eee;
       width: 100%;
-      font-size: 16px;
 
       &:last-child {
         border-bottom: 0;
@@ -101,13 +105,10 @@ const LogContainer = styled.div`
   .submit-btn {
     background-color: rgb(229, 56, 56, 0.4);
     color: rgba(256, 256, 256, 0.7);
-    border: 0;
-    border-radius: 15px;
     display: block;
     margin: 15px auto;
     padding: 15px 45px;
     width: 100%;
-    font-size: 13px;
     font-weight: bold;
     cursor: pointer;
     opacity: 1;
@@ -117,7 +118,7 @@ const LogContainer = styled.div`
     &:hover {
       transition: all 0.3s ease;
       background-color: rgb(229, 56, 56, 0.9);
-      transform : scale(1.1);
+      transform: scale(1.1);
     }
   }
 
@@ -156,7 +157,6 @@ const LogContainer = styled.div`
 
       .form-title {
         color: #000;
-        font-size: 1.7em;
         text-align: center;
 
         span {
@@ -182,12 +182,10 @@ const LogContainer = styled.div`
           outline: none;
           box-shadow: none;
           display: block;
-          height: 30px;
           line-height: 30px;
           padding: 8px 15px;
           border-bottom: 1px solid #eee;
           width: 100%;
-          font-size: 12px;
 
           &:last-child {
             border-bottom: 0;
@@ -207,7 +205,6 @@ const LogContainer = styled.div`
         margin: 15px auto;
         padding: 15px 45px;
         width: 100%;
-        font-size: 13px;
         font-weight: bold;
         cursor: pointer;
         opacity: 1;
@@ -240,7 +237,6 @@ const LogContainer = styled.div`
     }
 
     &.slide-up .form-title {
-      font-size: 1em;
       margin: 0;
       padding: 0;
       cursor: pointer;

@@ -2,6 +2,12 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import LikeButton from "./LikeButton";
 import ModifyButton from "./ModifyButton";
+import styled from "styled-components";
+
+const PrintBox = styled.div`
+  height: 100%;
+  overflow: scroll;
+`;
 
 export default function Message(props) {
   const [messagesData, setMessagesData] = React.useState([]);
@@ -48,36 +54,40 @@ export default function Message(props) {
       });
   };
 
-  return messagesData.map((message) => {
-    if (updateData) {
-      updateData.map((obj) => {
-        if (obj._id === message._id) {
-          message = obj;
+  return (
+    <PrintBox>
+      {messagesData.map((message) => {
+        if (updateData) {
+          updateData.map((obj) => {
+            if (obj._id === message._id) {
+              message = obj;
+            }
+            return obj;
+          });
         }
-        return obj;
-      });
-    }
 
-    return (
-      <div key={message._id}>
-        {deleteId.indexOf(message._id) === -1 && (
+        return (
           <div key={message._id}>
-            <div>
-              {message.firstName} {message.lastName} {message.date}
-              {(message.userId === userData.userId ||
-        userData.role === "admin") &&
-                <button onClick={() => deleteButton(message._id)}>
-                  supprimer
-                </button>
-              }
-              <LikeButton socket={props.socket} message={message} />
-              <ModifyButton message={message} socket={props.socket} />
-            </div>
-            {message.imageUrl && <img src={message.imageUrl} alt="pic" />}
-            <h3>{message.message}</h3>
+            {deleteId.indexOf(message._id) === -1 && (
+              <div key={message._id}>
+                <div>
+                  {message.firstName} {message.lastName} {message.date}
+                  {(message.userId === userData.userId ||
+                    userData.role === "admin") && (
+                    <button onClick={() => deleteButton(message._id)}>
+                      supprimer
+                    </button>
+                  )}
+                  <LikeButton socket={props.socket} message={message} />
+                  <ModifyButton message={message} socket={props.socket} />
+                </div>
+                {message.imageUrl && <img src={message.imageUrl} alt="pic" />}
+                <h3>{message.message}</h3>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-    );
-  });
+        );
+      })}
+    </PrintBox>
+  );
 }
