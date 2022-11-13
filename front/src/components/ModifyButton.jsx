@@ -1,5 +1,11 @@
 import React from "react";
-import PostMessage from "./PostMessage";
+import { ReactComponent as Update } from "../assets/update.svg";
+import styled from "styled-components";
+import { ReactComponent as Send } from "../assets/send.svg";
+import { ReactComponent as File } from "../assets/file.svg";
+import { COLORS } from "../style/global_css_value";
+
+const UpdateStyle = styled.div``;
 
 function ModifyButton(props) {
   const userData = JSON.parse(sessionStorage.getItem("userData"));
@@ -56,11 +62,11 @@ function ModifyButton(props) {
   }
 
   return (
-    <div>
+    <UpdateStyle>
       {(props.message.userId === userData.userId ||
         userData.role === "admin") && (
         <button onClick={() => modifyButton(props.message._id, 0)}>
-          Modifier
+          <Update />
         </button>
       )}
       {modRender && (
@@ -72,12 +78,17 @@ function ModifyButton(props) {
             name="message"
             value={change.message}
           />
-          <input type="file" onChange={saveFile} />
+          <label className="label_file" htmlFor="file_input">
+            <File width="25px" />
+          </label>
+          <input id="file_input" type="file" onChange={saveFile} />
 
-          <button>post !</button>
+          <button className="send_button">
+            <Send fill={COLORS.primary} />
+          </button>
         </form>
       )}
-    </div>
+    </UpdateStyle>
   );
 }
 

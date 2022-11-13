@@ -3,10 +3,49 @@ import { useNavigate } from "react-router-dom";
 import LikeButton from "./LikeButton";
 import ModifyButton from "./ModifyButton";
 import styled from "styled-components";
+import { ReactComponent as Delete } from "../assets/delete.svg";
+import {
+  LARGE_DEVICE_VALUE,
+  BORDER_RADIUS_VALUE,
+} from "../style/global_css_value";
 
 const PrintBox = styled.div`
   height: 100%;
   overflow: scroll;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  .post {
+    margin: 20px 0;
+    padding: 5px;
+    background-color: aliceblue;
+    @media (min-width: ${LARGE_DEVICE_VALUE}) {
+      width: 500px;
+      margin: 20px auto;
+      border-radius: ${BORDER_RADIUS_VALUE};
+    }
+  }
+
+  .content {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+  }
+
+  .content_text {
+    font-size: 16px;
+  }
+
+  .post_option {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  img {
+    max-width: 100px;
+    height: 100%;
+  }
 `;
 
 export default function Message(props) {
@@ -65,26 +104,38 @@ export default function Message(props) {
             return obj;
           });
         }
+        if (deleteId.indexOf(message._id) !== -1) {
+          return;
+        }
+
+        let date = new Date(message.date);
 
         return (
-          <div key={message._id}>
-            {deleteId.indexOf(message._id) === -1 && (
-              <div key={message._id}>
-                <div>
-                  {message.firstName} {message.lastName} {message.date}
+          <div className="post" key={message._id}>
+            <div key={message._id}>
+              <div>
+                {message.firstName} {message.lastName}&larr;
+                <span title={date.toLocaleString()}>
+                  {new Date().toLocaleDateString() === date.toLocaleDateString()
+                    ? date.toLocaleTimeString()
+                    : date.toLocaleDateString()}
+                </span>
+                <div className="content">
+                  <p className="content_text">{message.message}</p>
+                  {message.imageUrl && <img src={message.imageUrl} alt="pic" />}
+                </div>
+                <div className="post_option">
+                  <LikeButton socket={props.socket} message={message} />
+                  <ModifyButton message={message} socket={props.socket} />
                   {(message.userId === userData.userId ||
                     userData.role === "admin") && (
                     <button onClick={() => deleteButton(message._id)}>
-                      supprimer
+                      <Delete />
                     </button>
                   )}
-                  <LikeButton socket={props.socket} message={message} />
-                  <ModifyButton message={message} socket={props.socket} />
                 </div>
-                {message.imageUrl && <img src={message.imageUrl} alt="pic" />}
-                <h3>{message.message}</h3>
               </div>
-            )}
+            </div>
           </div>
         );
       })}

@@ -1,4 +1,10 @@
 import React from "react";
+import styled from "styled-components";
+import { ReactComponent as Upvote } from "../assets/upvote.svg";
+import { ReactComponent as Downvote } from "../assets/downvote.svg";
+import { COLORS } from "../style/global_css_value";
+
+const LikeButtonStyle = styled.div``;
 
 function LikeButton(props) {
   const [message, setMessage] = React.useState(props.message);
@@ -32,20 +38,28 @@ function LikeButton(props) {
       });
   };
   return (
-    <div>
+    <LikeButtonStyle>
       {indexDislike === -1 && indexLike === -1 && (
-        <button onClick={() => likeButton(message._id, 1)}>like</button>
+        <button onClick={() => likeButton(message._id, 1)}>
+          <Upvote />
+        </button>
       )}
       {indexLike === -1 && indexDislike === -1 && (
-        <button onClick={() => likeButton(message._id, -1)}>dislike</button>
+        <button onClick={() => likeButton(message._id, -1)}>
+          <Downvote />
+        </button>
       )}
       {indexLike !== -1 && (
-        <button onClick={() => likeButton(message._id, 0)}>unlike</button>
+        <button onClick={() => likeButton(message._id, 0)}>
+          <Upvote fill="#FD2D01" />
+        </button>
       )}
       {indexDislike !== -1 && (
-        <button onClick={() => likeButton(message._id, 0)}>undislike</button>
+        <button onClick={() => likeButton(message._id, 0)}>
+          <Downvote fill="#FD2D01" />
+        </button>
       )}
-    </div>
+    </LikeButtonStyle>
   );
 }
 

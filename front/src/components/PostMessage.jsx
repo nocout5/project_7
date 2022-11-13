@@ -9,8 +9,8 @@ const InputBox = styled.div`
   width: 100%;
   height: 55px;
   background-color: white;
-  position: absolute;
-  bottom: 0;
+  position: relative;
+  justify-content: flex-end;
   .post_input {
     padding: 7px;
     width: 75%;
@@ -71,6 +71,7 @@ export default function PostMessage(props) {
     event.preventDefault();
     const message_to_send = message;
     const date = new Date();
+
     message_to_send.date = date;
 
     const formData = new FormData();

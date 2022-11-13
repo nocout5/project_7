@@ -6,7 +6,7 @@ import PrivateRoutes from "./utils/PrivateRoutes.jsx";
 import Header from "./components/Header.jsx";
 import Profile from "./pages/Profile.jsx";
 import { createGlobalStyle } from "styled-components";
-import { BORDER_RADIUS_VALUE } from "./style/global_css_value.js";
+import { BORDER_RADIUS_VALUE, COLORS } from "./style/global_css_value.js";
 
 const GlobalStyle = createGlobalStyle`
 *{
@@ -16,15 +16,15 @@ const GlobalStyle = createGlobalStyle`
 
 body, html{
   background-color: #dbdce7;
-  user-select: none;
+  /* user-select: none; */
   min-height: 100vh;
 }
 
 .wrap{
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
-  align-items: center;
   flex-direction: column;
+
 }
 
 h2{
@@ -44,8 +44,15 @@ a{
 
 
 button{
+  padding: 0;
   border-radius: ${BORDER_RADIUS_VALUE};
   border: 0;
+  fill: ${COLORS.tertiary};
+  background-color: transparent;
+  svg{
+    width: 24px;
+    height: 24px;
+  }
 }
 
 `;
