@@ -31,7 +31,6 @@ const HeaderStyle = styled.header`
     width: 35px;
     height: 35px;
     right: 20px;
-    cursor: pointer;
   }
 
   .logo_container {

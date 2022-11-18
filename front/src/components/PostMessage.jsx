@@ -1,9 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../style/global_css_value";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFile } from "@fortawesome/free-solid-svg-icons";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { ReactComponent as Send } from "../assets/send.svg";
+import { ReactComponent as File } from "../assets/file.svg";
 
 const InputBox = styled.div`
   width: 100%;
@@ -27,7 +26,8 @@ const InputBox = styled.div`
     position: absolute;
     border: 0;
     color: ${COLORS.tertiary};
-    left: 10px;
+    top: 5px;
+    left: 5px;
     width: 20px;
     height: 20px;
     cursor: pointer;
@@ -106,12 +106,12 @@ export default function PostMessage(props) {
         />
 
         <label className="label_file" htmlFor="file_input">
-          <FontAwesomeIcon icon={faFile} />
+          <File />
         </label>
         <input id="file_input" type="file" onChange={saveFile} />
 
         <button className="send_button">
-          <FontAwesomeIcon icon={faPaperPlane} />
+          <Send fill={COLORS.primary} />
         </button>
       </form>
     </InputBox>

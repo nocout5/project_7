@@ -41,20 +41,79 @@ a{
   text-decoration: none;
 }
 
+form{
+  transition: opacity 250ms;
+}
 
-
-button{
+button, label{
+  cursor: pointer;
   padding: 0;
   border-radius: ${BORDER_RADIUS_VALUE};
   border: 0;
   fill: ${COLORS.tertiary};
   background-color: transparent;
+  transition: opacity 250ms;
+
   svg{
     width: 24px;
     height: 24px;
   }
+
 }
 
+
+@keyframes inAnimation {
+    0% {
+      opacity: 0;
+      visibility: hidden;
+    }
+    100% {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  @keyframes outAnimation {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+
+  @keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(1px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(1px, 0, 0);
+  }
+}
+@keyframes slideLeft {
+  0%{
+    transform: translateX(-100vw);
+  }
+
+  50%{
+    transform: translateX(20vw);
+  }
+
+  100%{
+    transform: translateX(0);
+  }
+  
+}
 `;
 
 export default function App() {

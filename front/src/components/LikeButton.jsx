@@ -2,9 +2,18 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Upvote } from "../assets/upvote.svg";
 import { ReactComponent as Downvote } from "../assets/downvote.svg";
+import { CSSTransition } from "react-transition-group";
 import { COLORS } from "../style/global_css_value";
 
-const LikeButtonStyle = styled.div``;
+const LikeButtonStyle = styled.div`
+  button {
+    animation: inAnimation 1s;
+  }
+
+  .arrow_list {
+    width: 60px;
+  }
+`;
 
 function LikeButton(props) {
   const [message, setMessage] = React.useState(props.message);
@@ -39,26 +48,28 @@ function LikeButton(props) {
   };
   return (
     <LikeButtonStyle>
-      {indexDislike === -1 && indexLike === -1 && (
-        <button onClick={() => likeButton(message._id, 1)}>
-          <Upvote />
-        </button>
-      )}
-      {indexLike === -1 && indexDislike === -1 && (
-        <button onClick={() => likeButton(message._id, -1)}>
-          <Downvote />
-        </button>
-      )}
-      {indexLike !== -1 && (
-        <button onClick={() => likeButton(message._id, 0)}>
-          <Upvote fill="#FD2D01" />
-        </button>
-      )}
-      {indexDislike !== -1 && (
-        <button onClick={() => likeButton(message._id, 0)}>
-          <Downvote fill="#FD2D01" />
-        </button>
-      )}
+      <div className="arrow_list">
+        {indexDislike === -1 && indexLike === -1 && (
+          <button onClick={() => likeButton(message._id, 1)}>
+            <Upvote />
+          </button>
+        )}
+        {indexLike === -1 && indexDislike === -1 && (
+          <button onClick={() => likeButton(message._id, -1)}>
+            <Downvote />
+          </button>
+        )}
+        {indexLike !== -1 && (
+          <button onClick={() => likeButton(message._id, 0)}>
+            <Upvote fill="#FD2D01" />
+          </button>
+        )}
+        {indexDislike !== -1 && (
+          <button onClick={() => likeButton(message._id, 0)}>
+            <Downvote fill="#FD2D01" />
+          </button>
+        )}
+      </div>
     </LikeButtonStyle>
   );
 }

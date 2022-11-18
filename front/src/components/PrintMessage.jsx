@@ -7,6 +7,7 @@ import { ReactComponent as Delete } from "../assets/delete.svg";
 import {
   LARGE_DEVICE_VALUE,
   BORDER_RADIUS_VALUE,
+  COLORS,
 } from "../style/global_css_value";
 
 const PrintBox = styled.div`
@@ -17,9 +18,19 @@ const PrintBox = styled.div`
   }
 
   .post {
+    position: relative;
+
+    border: hsla(233, 13%, 35%, 0.5) 2px solid;
     margin: 20px 0;
     padding: 5px;
     background-color: aliceblue;
+    animation: slideLeft 800ms ease-out both;
+    transition: border 125ms;
+
+    :hover {
+      border: hsla(233, 13%, 35%, 1) 2px solid;
+    }
+
     @media (min-width: ${LARGE_DEVICE_VALUE}) {
       width: 500px;
       margin: 20px auto;
@@ -33,6 +44,10 @@ const PrintBox = styled.div`
     margin: 5px;
   }
 
+  .post_infos {
+    font-size: 16px;
+  }
+
   .content_text {
     font-size: 16px;
   }
@@ -40,6 +55,11 @@ const PrintBox = styled.div`
   .post_option {
     display: flex;
     justify-content: space-between;
+  }
+
+  .delete_button:hover {
+    fill: red;
+    animation: shake 0.52s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   }
 
   img {
@@ -56,6 +76,7 @@ export default function Message(props) {
   const userData = JSON.parse(sessionStorage.getItem("userData"));
 
   const navigate = useNavigate();
+  let i = 0;
 
   React.useEffect(function () {
     fetch("http://localhost:3000/messages/", {
@@ -72,6 +93,7 @@ export default function Message(props) {
 
   React.useEffect(() => {
     props.socket.on("message-receive", (msg) => {
+      msg.aDelay = 0;
       setMessagesData((prev) => [...prev, msg]);
     });
     props.socket.on("id_to_delete", (id) => {
@@ -92,10 +114,19 @@ export default function Message(props) {
         props.socket.emit("delete_message", data_id);
       });
   };
+  let zValue = 1000;
 
   return (
     <PrintBox>
       {messagesData.map((message) => {
+        let aDelay = "";
+        if (message.aDelay === 0) {
+          aDelay = `${message.aDelay}s`;
+        } else {
+          aDelay = `${i * 0.1}s`;
+        }
+
+        i++;
         if (updateData) {
           updateData.map((obj) => {
             if (obj._id === message._id) {
@@ -109,17 +140,23 @@ export default function Message(props) {
         }
 
         let date = new Date(message.date);
-
         return (
-          <div className="post" key={message._id}>
+          <div
+            className="post"
+            key={message._id}
+            style={{ zIndex: --zValue, animationDelay: aDelay }}
+          >
             <div key={message._id}>
               <div>
-                {message.firstName} {message.lastName}&larr;
-                <span title={date.toLocaleString()}>
-                  {new Date().toLocaleDateString() === date.toLocaleDateString()
-                    ? date.toLocaleTimeString()
-                    : date.toLocaleDateString()}
-                </span>
+                <p className="post_infos">
+                  {message.firstName} {message.lastName} le &#160;
+                  <span title={date.toLocaleString()}>
+                    {new Date().toLocaleDateString() ===
+                    date.toLocaleDateString()
+                      ? date.toLocaleTimeString()
+                      : date.toLocaleDateString()}
+                  </span>
+                </p>
                 <div className="content">
                   <p className="content_text">{message.message}</p>
                   {message.imageUrl && <img src={message.imageUrl} alt="pic" />}
@@ -129,7 +166,10 @@ export default function Message(props) {
                   <ModifyButton message={message} socket={props.socket} />
                   {(message.userId === userData.userId ||
                     userData.role === "admin") && (
-                    <button onClick={() => deleteButton(message._id)}>
+                    <button
+                      className="delete_button"
+                      onClick={() => deleteButton(message._id)}
+                    >
                       <Delete />
                     </button>
                   )}

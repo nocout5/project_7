@@ -4,8 +4,49 @@ import styled from "styled-components";
 import { ReactComponent as Send } from "../assets/send.svg";
 import { ReactComponent as File } from "../assets/file.svg";
 import { COLORS } from "../style/global_css_value";
+import {
+  LARGE_DEVICE_VALUE,
+  BORDER_RADIUS_VALUE,
+} from "../style/global_css_value";
 
-const UpdateStyle = styled.div``;
+const UpdateStyle = styled.div`
+  .mod_form {
+    padding: 7px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    margin-top: 10px;
+    opacity: 0;
+    z-index: 100;
+
+    @media (min-width: ${LARGE_DEVICE_VALUE}) {
+      border-radius: ${BORDER_RADIUS_VALUE};
+    }
+  }
+
+  .mod_form_on {
+    opacity: 1;
+  }
+
+  .mod_button_on {
+    opacity: 0.5;
+  }
+
+  .mod_input {
+    border: none;
+    outline: 0px none transparent;
+  }
+
+  #file_input {
+    display: none;
+  }
+
+  .send_button {
+    position: absolute;
+    right: 5px;
+  }
+`;
 
 function ModifyButton(props) {
   const userData = JSON.parse(sessionStorage.getItem("userData"));
@@ -30,6 +71,7 @@ function ModifyButton(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
+    setModRender((prev) => !prev);
     console.log(change);
     const message_to_send = change;
     const date = new Date();
@@ -65,29 +107,35 @@ function ModifyButton(props) {
     <UpdateStyle>
       {(props.message.userId === userData.userId ||
         userData.role === "admin") && (
-        <button onClick={() => modifyButton(props.message._id, 0)}>
+        <button
+          className={modRender ? "mod_button_on" : ""}
+          onClick={() => modifyButton(props.message._id, 0)}
+        >
           <Update />
         </button>
       )}
-      {modRender && (
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder={props.message.message}
-            onChange={handleChange}
-            name="message"
-            value={change.message}
-          />
-          <label className="label_file" htmlFor="file_input">
-            <File width="25px" />
-          </label>
-          <input id="file_input" type="file" onChange={saveFile} />
 
-          <button className="send_button">
-            <Send fill={COLORS.primary} />
-          </button>
-        </form>
-      )}
+      <form
+        onSubmit={handleSubmit}
+        className={modRender ? "mod_form_on mod_form" : "mod_form"}
+      >
+        <label className="label" htmlFor="file_input">
+          <File width="25px" />
+        </label>
+        <input id="file_input" type="file" onChange={saveFile} />
+        <input
+          className="mod_input"
+          type="text"
+          placeholder={props.message.message}
+          onChange={handleChange}
+          name="message"
+          value={change.message}
+        />
+
+        <button className="send_button">
+          <Send fill={COLORS.primary} />
+        </button>
+      </form>
     </UpdateStyle>
   );
 }
