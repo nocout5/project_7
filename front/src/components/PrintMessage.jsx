@@ -12,6 +12,7 @@ import {
 
 const PrintBox = styled.div`
   height: 100%;
+
   overflow: scroll;
   ::-webkit-scrollbar {
     display: none;
@@ -21,7 +22,6 @@ const PrintBox = styled.div`
     position: relative;
 
     border: hsla(233, 13%, 35%, 0.5) 2px solid;
-    margin: 20px 0;
     padding: 5px;
     background-color: aliceblue;
     animation: slideLeft 800ms ease-out both;
@@ -39,19 +39,40 @@ const PrintBox = styled.div`
   }
 
   .content {
+    margin: 5px;
     display: flex;
     justify-content: space-between;
-    margin: 5px;
+    flex-wrap: wrap;
   }
 
   .post_infos {
+    font-style: italic;
     font-size: 16px;
   }
 
   .content_text {
     font-size: 16px;
+    width: 80%;
+    overflow-wrap: break-word;
+    flex-grow: 1;
+    order: 1;
   }
-
+  .content_img {
+    order: 2;
+    width: 20%;
+    height: 100%;
+    transition: all 250ms;
+    :hover {
+      box-shadow: 0 0 5px #388fcd;
+    }
+    :active {
+      width: auto;
+      box-shadow: none;
+      max-width: 90%;
+      margin: auto;
+      order: 1;
+    }
+  }
   .post_option {
     display: flex;
     justify-content: space-between;
@@ -61,17 +82,13 @@ const PrintBox = styled.div`
     fill: red;
     animation: shake 0.52s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   }
-
-  img {
-    max-width: 100px;
-    height: 100%;
-  }
 `;
 
 export default function Message(props) {
   const [messagesData, setMessagesData] = React.useState([]);
   const [deleteId, setDeleteId] = React.useState([]);
   const [updateData, setUpdateData] = React.useState([]);
+  const [scrollElmt, setScrollElmt] = React.useState("");
 
   const userData = JSON.parse(sessionStorage.getItem("userData"));
 
@@ -87,14 +104,15 @@ export default function Message(props) {
         sessionStorage.removeItem("userData");
         navigate("/login");
       }
-      res.json().then((data) => setMessagesData(data));
+      res.json().then((data) => setMessagesData(data.reverse()));
     });
   }, []);
 
   React.useEffect(() => {
     props.socket.on("message-receive", (msg) => {
       msg.aDelay = 0;
-      setMessagesData((prev) => [...prev, msg]);
+      setScrollElmt(msg._id);
+      setMessagesData((prev) => [msg, ...prev]);
     });
     props.socket.on("id_to_delete", (id) => {
       setDeleteId((prev) => [...prev, id]);
@@ -115,6 +133,13 @@ export default function Message(props) {
       });
   };
   let zValue = 1000;
+
+  if (scrollElmt) {
+    const element = document.getElementById(scrollElmt);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  }
 
   return (
     <PrintBox>
@@ -143,6 +168,7 @@ export default function Message(props) {
         return (
           <div
             className="post"
+            id={message._id}
             key={message._id}
             style={{ zIndex: --zValue, animationDelay: aDelay }}
           >
@@ -158,8 +184,14 @@ export default function Message(props) {
                   </span>
                 </p>
                 <div className="content">
+                  {message.imageUrl && (
+                    <img
+                      className="content_img"
+                      src={message.imageUrl}
+                      alt="pic"
+                    />
+                  )}
                   <p className="content_text">{message.message}</p>
-                  {message.imageUrl && <img src={message.imageUrl} alt="pic" />}
                 </div>
                 <div className="post_option">
                   <LikeButton socket={props.socket} message={message} />

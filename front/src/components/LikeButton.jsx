@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Upvote } from "../assets/upvote.svg";
 import { ReactComponent as Downvote } from "../assets/downvote.svg";
-import { CSSTransition } from "react-transition-group";
 import { COLORS } from "../style/global_css_value";
 
 const LikeButtonStyle = styled.div`

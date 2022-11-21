@@ -11,15 +11,14 @@ const InputBox = styled.div`
   position: relative;
   justify-content: flex-end;
   .post_input {
-    padding: 7px;
-    width: 75%;
-
     position: absolute;
-    left: 5%;
+    width: 80%;
+    height: 80%;
+    padding: 7px;
+    left: 30px;
     border: 0;
-    top: 13px;
+    top: 5px;
     outline: 0px none transparent;
-    text-overflow: ellipsis;
   }
 
   .label_file {
@@ -34,7 +33,8 @@ const InputBox = styled.div`
   }
 
   #file_input {
-    display: none;
+    width: 30px;
+    opacity: 0;
   }
 
   .send_button {
@@ -44,6 +44,19 @@ const InputBox = styled.div`
     right: 17px;
     background-color: white;
     color: ${COLORS.primary};
+  }
+
+  .preview_img {
+    position: absolute;
+    z-index: 2000;
+    transform: translateY(-100%);
+    max-width: 90vw;
+    max-height: 80vh;
+    opacity: 0.5;
+    transition: opacity 250ms;
+    :hover {
+      opacity: 1;
+    }
   }
 `;
 
@@ -77,7 +90,6 @@ export default function PostMessage(props) {
     const formData = new FormData();
     formData.append("image", file);
     formData.append("message", JSON.stringify(message_to_send));
-
     const requestOptions = {
       method: "POST",
       credentials: "include",
@@ -87,16 +99,25 @@ export default function PostMessage(props) {
 
     fetch("http://localhost:3000/messages/", requestOptions).then((response) =>
       response.json().then((message_data) => {
-        console.log(message_data);
         props.socket.emit("send-message", message_data.infos);
+        setFile("");
+        message.message = "";
       })
     );
   }
 
   return (
     <InputBox>
+      {file && (
+        <img
+          className="preview_img"
+          src={URL.createObjectURL(file)}
+          alt="select img"
+        />
+      )}
+
       <form onSubmit={handleSubmit}>
-        <input
+        <textarea
           className="post_input"
           type="text"
           placeholder="type your message..."
@@ -106,9 +127,14 @@ export default function PostMessage(props) {
         />
 
         <label className="label_file" htmlFor="file_input">
-          <File />
+          <File fill={file ? "red" : ""} />
         </label>
-        <input id="file_input" type="file" onChange={saveFile} />
+        <input
+          id="file_input"
+          type="file"
+          accept="image/png, image/jpeg"
+          onChange={saveFile}
+        />
 
         <button className="send_button">
           <Send fill={COLORS.primary} />

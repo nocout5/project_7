@@ -15,7 +15,9 @@ const LogContainer = styled.div`
   margin: auto;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   position: relative;
+  flex-grow: 1;
   @media (min-width: ${LARGE_DEVICE_VALUE}) {
+    flex-grow: 0;
     width: 500px;
     flex-basis: 700px;
     border-radius: ${BORDER_RADIUS_VALUE};

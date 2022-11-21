@@ -39,12 +39,26 @@ const UpdateStyle = styled.div`
   }
 
   #file_input {
-    display: none;
+    width: 30px;
+    position: absolute;
+    left: 0;
+    opacity: 0;
   }
 
   .send_button {
     position: absolute;
     right: 5px;
+  }
+
+  .preview_img {
+    position: absolute;
+    transform: translateY(-100%);
+    max-width: 100px;
+    opacity: 0.5;
+    transition: opacity 250ms;
+    :hover {
+      opacity: 1;
+    }
   }
 `;
 
@@ -94,6 +108,8 @@ function ModifyButton(props) {
     ).then((response) =>
       response.json().then((message_data) => {
         props.socket.emit("update_message", message_data);
+        setFile("");
+        change.message = "";
       })
     );
   }
@@ -119,10 +135,22 @@ function ModifyButton(props) {
         onSubmit={handleSubmit}
         className={modRender ? "mod_form_on mod_form" : "mod_form"}
       >
+        {file && (
+          <img
+            className="preview_img"
+            src={URL.createObjectURL(file)}
+            alt="select img"
+          />
+        )}
         <label className="label" htmlFor="file_input">
-          <File width="25px" />
+          <File width="25px" fill={file ? "red" : ""} />
         </label>
-        <input id="file_input" type="file" onChange={saveFile} />
+        <input
+          id="file_input"
+          type="file"
+          accept="image/png, image/jpeg"
+          onChange={saveFile}
+        />
         <input
           className="mod_input"
           type="text"

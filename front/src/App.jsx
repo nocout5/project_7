@@ -31,9 +31,21 @@ h2{
   font-size: 30px;
 }
 
-body, button, input{
+body, button, input, textarea{
   font-size: 20px;
   font-family: 'Lato', sans-serif;
+}
+
+textarea {
+    border: none;
+    overflow: auto;
+    outline: none;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+    resize: none; /*remove the resize handle on the bottom right*/
 }
 
 a{
