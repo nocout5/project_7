@@ -122,6 +122,16 @@ export default function Message(props) {
     });
   }, [props.socket]);
 
+  React.useEffect(() => {
+    if (scrollElmt) {
+      const element = document.getElementById(scrollElmt);
+      if (element) {
+        console.log("here");
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [scrollElmt]);
+
   const deleteButton = (id) => {
     fetch(`http://localhost:3000/messages/${id}`, {
       method: "DELETE",
@@ -133,13 +143,6 @@ export default function Message(props) {
       });
   };
   let zValue = 1000;
-
-  if (scrollElmt) {
-    const element = document.getElementById(scrollElmt);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  }
 
   return (
     <PrintBox>
