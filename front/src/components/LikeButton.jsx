@@ -10,7 +10,13 @@ const LikeButtonStyle = styled.div`
   }
 
   .arrow_list {
-    width: 60px;
+    display: flex;
+    justify-content: space-between;
+    width: 24px;
+  }
+
+  .likes_count {
+    font-weight: 700;
   }
 `;
 
@@ -48,6 +54,8 @@ function LikeButton(props) {
   return (
     <LikeButtonStyle>
       <div className="arrow_list">
+        <div className="likes_count">{message.likes - message.dislikes}</div>
+
         {indexDislike === -1 && indexLike === -1 && (
           <button onClick={() => likeButton(message._id, 1)}>
             <Upvote />

@@ -11,6 +11,7 @@ import {
 } from "../style/global_css_value";
 
 const HeaderStyle = styled.header`
+  animation: slideTop 800ms both;
   position: relative;
   width: 100vw;
   background-color: #1f4160;
@@ -31,6 +32,14 @@ const HeaderStyle = styled.header`
     width: 35px;
     height: 35px;
     right: 20px;
+
+    #Vector {
+      transform: translateX(100px);
+      transition: transform 250ms;
+    }
+    :hover #Vector {
+      transform: translateX(-40px);
+    }
   }
 
   .logo_container {

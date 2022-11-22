@@ -10,6 +10,8 @@ import {
 } from "../style/global_css_value";
 
 const UpdateStyle = styled.div`
+  width: fit-content;
+
   .mod_form {
     padding: 7px;
     background-color: white;
