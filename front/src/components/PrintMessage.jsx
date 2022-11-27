@@ -8,10 +8,13 @@ import {
   LARGE_DEVICE_VALUE,
   BORDER_RADIUS_VALUE,
   COLORS,
+  LARGE_WIDTH_VALUE,
+  DROP_SHADOW,
 } from "../style/global_css_value";
 
 const PrintBox = styled.div`
   height: 100%;
+  animation: appear 2s forwards;
 
   overflow: scroll;
   ::-webkit-scrollbar {
@@ -20,7 +23,7 @@ const PrintBox = styled.div`
 
   .post {
     position: relative;
-
+    box-shadow: ${DROP_SHADOW};
     border: hsla(233, 13%, 35%, 0.5) 2px solid;
     padding: 5px;
     background-color: aliceblue;
@@ -32,7 +35,7 @@ const PrintBox = styled.div`
     }
 
     @media (min-width: ${LARGE_DEVICE_VALUE}) {
-      width: 500px;
+      width: ${LARGE_WIDTH_VALUE};
       margin: 20px auto;
       border-radius: ${BORDER_RADIUS_VALUE};
     }
@@ -41,8 +44,8 @@ const PrintBox = styled.div`
   .content {
     margin: 5px;
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    justify-content: flex-end;
+    flex-wrap: wrap-reverse;
   }
 
   .post_infos {
@@ -55,22 +58,18 @@ const PrintBox = styled.div`
     width: 80%;
     overflow-wrap: break-word;
     flex-grow: 1;
-    order: 1;
   }
   .content_img {
-    order: 2;
-    width: 20%;
+    align-self: flex-end;
+    max-width: 20%;
     height: 100%;
     transition: all 250ms;
     :hover {
       box-shadow: 0 0 5px #388fcd;
     }
     :active {
-      width: auto;
       box-shadow: none;
       max-width: 90%;
-      margin: auto;
-      order: 1;
     }
   }
   .post_option {
@@ -126,7 +125,6 @@ export default function Message(props) {
     if (scrollElmt) {
       const element = document.getElementById(scrollElmt);
       if (element) {
-        console.log("here");
         element.scrollIntoView({ behavior: "smooth" });
       }
     }
@@ -151,7 +149,7 @@ export default function Message(props) {
         if (message.aDelay === 0) {
           aDelay = `${message.aDelay}s`;
         } else {
-          aDelay = `${i * 0.1}s`;
+          aDelay = `${i * 0.1 + 2}s`;
         }
 
         i++;
@@ -187,6 +185,7 @@ export default function Message(props) {
                   </span>
                 </p>
                 <div className="content">
+                  <p className="content_text">{message.message}</p>
                   {message.imageUrl && (
                     <img
                       className="content_img"
@@ -194,7 +193,6 @@ export default function Message(props) {
                       alt="pic"
                     />
                   )}
-                  <p className="content_text">{message.message}</p>
                 </div>
                 <div className="post_option">
                   <LikeButton socket={props.socket} message={message} />

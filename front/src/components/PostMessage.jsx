@@ -5,7 +5,7 @@ import { ReactComponent as Send } from "../assets/send.svg";
 import { ReactComponent as File } from "../assets/file.svg";
 
 const InputBox = styled.div`
-  animation: slideRight 800ms both;
+  animation: slideRight 800ms 2s both;
   z-index: 3000;
   width: 100%;
   height: 55px;

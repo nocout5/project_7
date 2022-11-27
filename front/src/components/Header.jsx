@@ -8,10 +8,10 @@ import { ReactComponent as Logout } from "../assets/logout.svg";
 import {
   LARGE_DEVICE_VALUE,
   BORDER_RADIUS_VALUE,
+  LARGE_WIDTH_VALUE,
 } from "../style/global_css_value";
 
 const HeaderStyle = styled.header`
-  animation: slideTop 800ms both;
   position: relative;
   width: 100vw;
   background-color: #1f4160;
@@ -21,9 +21,13 @@ const HeaderStyle = styled.header`
   margin: 0 auto;
 
   @media (min-width: ${LARGE_DEVICE_VALUE}) {
-    width: 500px;
+    width: ${LARGE_WIDTH_VALUE};
     border-radius: 0 0 ${BORDER_RADIUS_VALUE} ${BORDER_RADIUS_VALUE};
   }
+
+  /* .animation {
+    animation: slideTop 800ms 2s both;
+  } */
 
   .unlog_button {
     position: absolute;

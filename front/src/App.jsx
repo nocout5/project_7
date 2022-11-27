@@ -19,6 +19,7 @@ body, html{
   /* user-select: none; */
   min-height: 100vh;
   font-family: 'Lato', sans-serif;
+  overflow: hidden;
   ::-webkit-scrollbar {
     display: none;
   }
@@ -151,11 +152,11 @@ button, label{
 
 @keyframes slideRight {
   0%{
-    transform: translateX(100%);
+    transform: translateX(100vw);
   }
 
   50%{
-    transform: translateX(-30%);
+    transform: translateX(-30vw);
   }
 
   100%{

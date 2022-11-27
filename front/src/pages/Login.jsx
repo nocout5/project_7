@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { COLORS } from "../style/global_css_value";
 import login_background from "../assets/login_back.jpg";
 import { BORDER_RADIUS_VALUE } from "../style/global_css_value";
-import { LARGE_DEVICE_VALUE } from "../style/global_css_value";
+import { LARGE_DEVICE_VALUE, DROP_SHADOW } from "../style/global_css_value";
 
 const LogContainer = styled.div`
   background-color: ${COLORS.tertiary};
@@ -13,7 +13,7 @@ const LogContainer = styled.div`
   width: 100vw;
   flex-basis: 90vh;
   margin: auto;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: ${DROP_SHADOW};
   position: relative;
   flex-grow: 1;
   @media (min-width: ${LARGE_DEVICE_VALUE}) {
