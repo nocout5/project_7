@@ -52,12 +52,15 @@ const HeaderStyle = styled.header`
   }
 `;
 
+// affiche le header sur toutes les pages, les éléments du header
+// sont conditionnels à la page
 export default function Header() {
   const [userData, setUserData] = React.useState(
     sessionStorage.getItem("userData")
   );
   const navigate = useNavigate();
 
+  // envoie une requète pour déconnecter l'utilisateur
   function unlog() {
     const requestOptions = {
       method: "POST",

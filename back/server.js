@@ -6,8 +6,6 @@ const messagesRoutes = require("./routes/messages");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const cors = require("cors");
-const bodyParser = require("body-parser");
-
 const socketIo = require("socket.io");
 
 const app = express();

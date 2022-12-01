@@ -264,11 +264,13 @@ export default function Login() {
 
   const userIsLogged = sessionStorage.getItem("userData");
 
+  // récupère les input value
   function handleChange(event) {
     const { name, value } = event.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
   }
 
+  // envoie la requète avec les infos utilisateur
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -289,15 +291,21 @@ export default function Login() {
             sessionStorage.setItem("userData", JSON.stringify(data));
             window.location.reload();
           });
+        else {
+          alert("utilisateur ou mot de passe non reconnue !");
+        }
       }
     );
   }
+
+  // déconnecte l'utilisateur de la session si le sesionstorage est vide
   React.useEffect(function () {
     if (userIsLogged) {
       navigate("/");
     }
   }, []);
 
+  // permet de switcher ver la page d'inscription
   function slideLogIn() {
     setSlideUp((current) => !current);
   }
@@ -305,6 +313,8 @@ export default function Login() {
   return (
     <LogContainer>
       <div className={slideUp ? "slide-up log_in" : "log_in"}>
+        {" "}
+        {/*  */}
         <h2 onClick={slideLogIn} className="form-title" id="log_in">
           <span>ou</span>Connexion
         </h2>
@@ -320,7 +330,7 @@ export default function Login() {
             />
             <input
               className="input"
-              type="text"
+              type="password"
               placeholder="mot de passe"
               onChange={handleChange}
               name="password"

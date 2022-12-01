@@ -83,6 +83,8 @@ const PrintBox = styled.div`
   }
 `;
 
+// récupère tous les éléments de la colection messages de la db,
+// affiche tous les message avec leurs option
 export default function Message(props) {
   const [messagesData, setMessagesData] = React.useState([]);
   const [deleteId, setDeleteId] = React.useState([]);
@@ -94,6 +96,7 @@ export default function Message(props) {
   const navigate = useNavigate();
   let i = 0;
 
+  // envoie la requète pour récupérer tous les messages
   React.useEffect(function () {
     fetch("http://localhost:3000/messages/", {
       method: "GET",
@@ -107,10 +110,12 @@ export default function Message(props) {
     });
   }, []);
 
+  // écoute les évenement de socket io pour mettre à jour l'affichage en conséquence
   React.useEffect(() => {
     props.socket.on("message-receive", (msg) => {
+      // ajoute une variable pour empecher un délai dans l'animation du msg
       msg.aDelay = 0;
-      setScrollElmt(msg._id);
+      setScrollElmt(msg);
       setMessagesData((prev) => [msg, ...prev]);
     });
     props.socket.on("id_to_delete", (id) => {
@@ -121,15 +126,17 @@ export default function Message(props) {
     });
   }, [props.socket]);
 
+  // scroll sur le message envoyer par l'utilisateur uniquement
   React.useEffect(() => {
-    if (scrollElmt) {
-      const element = document.getElementById(scrollElmt);
+    if (scrollElmt && userData.userId === scrollElmt.userId) {
+      const element = document.getElementById(scrollElmt._id);
       if (element) {
         element.scrollIntoView({ behavior: "smooth" });
       }
     }
   }, [scrollElmt]);
 
+  // envoie une requète pour suprimmer un msg
   const deleteButton = (id) => {
     fetch(`http://localhost:3000/messages/${id}`, {
       method: "DELETE",
@@ -140,6 +147,8 @@ export default function Message(props) {
         props.socket.emit("delete_message", data_id);
       });
   };
+
+  // variable utilisée pour permettre aux post d'étre toujours visible
   let zValue = 1000;
 
   return (
@@ -154,6 +163,7 @@ export default function Message(props) {
 
         i++;
         if (updateData) {
+          // parcours la liste des msg modifiées pour remplacer la liste initial
           updateData.map((obj) => {
             if (obj._id === message._id) {
               message = obj;
@@ -176,12 +186,14 @@ export default function Message(props) {
             <div key={message._id}>
               <div>
                 <p className="post_infos">
-                  {message.firstName} {message.lastName} le &#160;
+                  {message.firstName} {message.lastName}
+                  {message.mod && <span> modifié </span>}
+                  &#160;
                   <span title={date.toLocaleString()}>
                     {new Date().toLocaleDateString() ===
                     date.toLocaleDateString()
-                      ? date.toLocaleTimeString()
-                      : date.toLocaleDateString()}
+                      ? `à ${date.toLocaleTimeString()}`
+                      : `le ${date.toLocaleDateString()}`}
                   </span>
                 </p>
                 <div className="content">

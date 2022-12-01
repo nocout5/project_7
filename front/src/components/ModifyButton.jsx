@@ -20,6 +20,7 @@ const UpdateStyle = styled.div`
     width: 100%;
     margin-top: 10px;
     opacity: 0;
+    display: none;
     z-index: 100;
 
     @media (min-width: ${LARGE_DEVICE_VALUE}) {
@@ -28,6 +29,7 @@ const UpdateStyle = styled.div`
   }
 
   .mod_form_on {
+    display: block;
     opacity: 1;
   }
 
@@ -36,6 +38,7 @@ const UpdateStyle = styled.div`
   }
 
   .mod_input {
+    width: 90%;
     border: none;
     outline: 0px none transparent;
   }
@@ -64,6 +67,7 @@ const UpdateStyle = styled.div`
   }
 `;
 
+// envoie la requète update d'un msg
 function ModifyButton(props) {
   const userData = JSON.parse(sessionStorage.getItem("userData"));
 
@@ -77,14 +81,17 @@ function ModifyButton(props) {
   });
   const [file, setFile] = React.useState();
 
+  // switche l'affichage de l'input d'update
   const modifyButton = (id) => {
     return setModRender((prev) => !prev);
   };
 
+  // récupère le fichier d'input file
   const saveFile = (e) => {
     setFile(e.target.files[0]);
   };
 
+  // envoie la requète
   function handleSubmit(event) {
     event.preventDefault();
     setModRender((prev) => !prev);
@@ -116,6 +123,7 @@ function ModifyButton(props) {
     );
   }
 
+  // récupère les input value
   function handleChange(event) {
     const { name, value } = event.target;
     setChange((prev) => ({ ...prev, [name]: value }));

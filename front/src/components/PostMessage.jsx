@@ -62,10 +62,12 @@ const InputBox = styled.div`
   }
 `;
 
+// envoie requète avec les infos d'un nouveaux msg
 export default function PostMessage(props) {
   const userData = JSON.parse(sessionStorage.getItem("userData"));
   const [message, setMessage] = React.useState({
     message: "",
+    mod: false,
     userId: userData.userId,
     firstName: userData.firstName,
     lastName: userData.lastName,
@@ -73,15 +75,18 @@ export default function PostMessage(props) {
   });
   const [file, setFile] = React.useState();
 
+  // récupère le fichier dans input file
   const saveFile = (e) => {
     setFile(e.target.files[0]);
   };
 
+  // récupère les input value
   function handleChange(event) {
     const { name, value } = event.target;
     setMessage((prev) => ({ ...prev, [name]: value }));
   }
 
+  // envoie la requète
   function handleSubmit(event) {
     event.preventDefault();
     const message_to_send = message;

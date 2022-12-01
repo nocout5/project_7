@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+// envoie une requète avec les infos d'un nouvel utilisateur
 export default function Register(props) {
   const [userData, setUserData] = React.useState({
     email: "",
@@ -12,13 +13,23 @@ export default function Register(props) {
 
   const navigate = useNavigate();
 
+  // récupère les input value
   function handleChange(event) {
     const { name, value } = event.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
   }
 
+  // envoie la requète
   function handleSubmit(event) {
     event.preventDefault();
+    // regex pour la validation de l'email
+    if (
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(userData.email) ===
+      false
+    ) {
+      alert("You have entered an invalid email address!");
+      return;
+    }
     const requestOptions = {
       method: "POST",
       headers: {
@@ -30,12 +41,16 @@ export default function Register(props) {
 
     fetch("http://localhost:3000/auth/signup", requestOptions).then(
       (response) => {
-        console.log(response);
-        navigate("/login");
+        if (response.status === 201) {
+          alert("utilisateur créé");
+        } else {
+          alert("erreur lors de la création de l'utilisateur");
+        }
       }
     );
   }
 
+  // switche entre login et register
   function slideSignUp() {
     props.setState((current) => !current);
   }

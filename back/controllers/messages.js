@@ -2,6 +2,7 @@ const Message = require("../models/Message");
 const User = require("../models/User");
 const fs = require("fs");
 
+// récupère les infos du messages et l'envoie dans la db
 exports.createMessage = (req, res, next) => {
   const messageObject = JSON.parse(req.body.message);
   const message = new Message({
@@ -28,6 +29,7 @@ exports.createMessage = (req, res, next) => {
     });
 };
 
+// met à jour un message, vérifie au préalable les  autorisations de l'utilisateur
 exports.updateMessage = (req, res, next) => {
   Message.findOne({ _id: req.params.id })
     .then((message) => {
@@ -54,6 +56,7 @@ exports.updateMessage = (req, res, next) => {
         }
 
         messageObject._id = req.params.id;
+        messageObject.mod = true;
         Message.updateOne(
           { _id: req.params.id },
           { ...messageObject, _id: req.params.id }
@@ -67,6 +70,7 @@ exports.updateMessage = (req, res, next) => {
     });
 };
 
+// récupère tous les éléments de la colection message dans la db
 exports.getAllMessages = (req, res, next) => {
   Message.find()
     .then((messages) => {
@@ -75,6 +79,7 @@ exports.getAllMessages = (req, res, next) => {
     .catch((error) => res.status(404).json(error));
 };
 
+// suprime un élément de la colection message de la db
 exports.deleteMessage = (req, res, next) => {
   user = User.findOne({ _id: req.auth.userId }).then((user) => {
     const user_role = user.role;
@@ -107,6 +112,8 @@ exports.deleteMessage = (req, res, next) => {
   });
 };
 
+// modifie la valeur des like d'un élément de la colection message,
+// vérifie les autorisations de l'utilisateur
 exports.likesMessage = (req, res, next) => {
   Message.findOne({ _id: req.params.id })
     .then((message) => {

@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 
+// vérifie la présence et la validité du token dans la requète de l'utilisateur
 module.exports = (req, res, next) => {
   try {
     const token = req.cookies.access_token;

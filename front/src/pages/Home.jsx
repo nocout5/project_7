@@ -133,6 +133,7 @@ const HomeContainer = styled.div`
 export default function Home() {
   return (
     <HomeContainer>
+      {/* élément du page loader */}
       <div className="loader_container">
         <div className="loader">
           <svg className="circular" viewBox="25 25 50 50">

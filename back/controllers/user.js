@@ -2,6 +2,8 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+// creer un nouvel utilisateur, hash le mot de passe avec bcrypt,
+// l'envoi dans la base de données mongodb.
 exports.signup = (req, res, next) => {
   bcrypt
     .hash(req.body.password, 10)
@@ -22,6 +24,7 @@ exports.signup = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
+// permet le login d'un utilisateur, creer un token et l'enregistre dans un cookie http only
 exports.login = (req, res, next) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
@@ -52,6 +55,7 @@ exports.login = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
+// déconnecte l'utilisateur en suprimant le cookie qui contient le token
 exports.logout = (req, res, next) => {
   res.cookie("access_token", "", {
     Expire: 0,

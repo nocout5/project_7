@@ -4,7 +4,6 @@ import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import PrivateRoutes from "./utils/PrivateRoutes.jsx";
 import Header from "./components/Header.jsx";
-import Profile from "./pages/Profile.jsx";
 import { createGlobalStyle } from "styled-components";
 import { BORDER_RADIUS_VALUE, COLORS } from "./style/global_css_value.js";
 
@@ -174,7 +173,6 @@ export default function App() {
       <Routes>
         <Route element={<PrivateRoutes />}>
           <Route element={<Home />} path="/" exact />
-          <Route element={<Profile />} path="profile" exact />
         </Route>
         <Route element={<Login />} path="login" />
       </Routes>

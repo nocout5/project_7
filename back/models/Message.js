@@ -6,6 +6,7 @@ const messageSchema = mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   date: { type: Date },
+  mod: { type: Boolean },
   likes: { type: Number },
   dislikes: { type: Number },
   usersLiked: { type: Array },

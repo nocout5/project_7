@@ -20,6 +20,8 @@ const LikeButtonStyle = styled.div`
   }
 `;
 
+// envoie une requète pour modifier le compteur de like dans
+// les éléments de la colection messages de la db
 function LikeButton(props) {
   const [message, setMessage] = React.useState(props.message);
   const userData = JSON.parse(sessionStorage.getItem("userData"));
@@ -27,6 +29,8 @@ function LikeButton(props) {
   let indexLike = message.usersLiked.indexOf(userData.userId);
   let indexDislike = message.usersDisliked.indexOf(userData.userId);
 
+  // écoute les événements de socket io pour un afficchage des likes,
+  // sans recharger la page
   React.useEffect(() => {
     props.socket.on("like_message_update", (data) => {
       if (message._id === data._id) {
@@ -35,6 +39,7 @@ function LikeButton(props) {
     });
   }, [props.socket]);
 
+  // envoie la requète
   const likeButton = (id, like) => {
     const requestOptions = {
       method: "POST",
