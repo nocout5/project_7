@@ -59,7 +59,9 @@ const UpdateStyle = styled.div`
     position: absolute;
     transform: translateY(-100%);
     max-width: 100px;
+    max-height: 100px;
     opacity: 0.5;
+    z-index: 2000;
     transition: opacity 250ms;
     :hover {
       opacity: 1;
